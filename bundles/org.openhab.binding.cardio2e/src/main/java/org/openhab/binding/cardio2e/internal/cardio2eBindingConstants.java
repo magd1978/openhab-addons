@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -16,13 +16,14 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 
 /**
- * The {@link Cardio2eBindingConstants} class defines common constants, which are
+ * The {@link cardio2eBindingConstants} class defines common constants, which are
  * used across the whole binding.
  *
  * @author Manuel Alberto Guerrero Díaz - Initial contribution
+ * @author Fernando A. P. Gomes - OH3 port
  */
 @NonNullByDefault
-public class Cardio2eBindingConstants {
+public class cardio2eBindingConstants {
 
     private static final String BINDING_ID = "cardio2e";
 

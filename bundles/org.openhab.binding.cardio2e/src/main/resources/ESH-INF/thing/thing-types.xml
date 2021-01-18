@@ -6,8 +6,8 @@
 
 	<!-- Sample Thing Type -->
 	<thing-type id="sample">
-		<label>Cardio2e Binding Thing</label>
-		<description>Sample thing for Cardio2e Binding</description>
+		<label>cardio2e Binding Thing</label>
+		<description>Sample thing for cardio2e Binding</description>
 
 		<channels>
 			<channel id="channel1" typeId="sample-channel" />
@@ -25,8 +25,8 @@
 	<!-- Sample Channel Type -->
 	<channel-type id="sample-channel">
 		<item-type>cardio2eItem</item-type>
-		<label>Cardio2e Binding Channel</label>
-		<description>Sample channel for Cardio2e Binding</description>
+		<label>cardio2e Binding Channel</label>
+		<description>Sample channel for cardio2e Binding</description>
 	</channel-type>
 
 </thing:thing-descriptions>

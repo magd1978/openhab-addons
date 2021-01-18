@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.cardio2e.internal;
 
-import static org.openhab.binding.cardio2e.internal.Cardio2eBindingConstants.*;
+import static org.openhab.binding.cardio2e.internal.cardio2eBindingConstants.*;
 
 import java.util.Collections;
 import java.util.Set;
@@ -27,14 +27,16 @@ import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The {@link Cardio2eHandlerFactory} is responsible for creating things and thing
+ * The {@link cardio2eHandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author Manuel Alberto Guerrero Díaz - Initial contribution
+ * @author Fernando A. P. Gomes - OH2 and OH3 port
+ * 
  */
 @NonNullByDefault
 @Component(configurationPid = "binding.cardio2e", service = ThingHandlerFactory.class)
-public class Cardio2eHandlerFactory extends BaseThingHandlerFactory {
+public class cardio2eHandlerFactory extends BaseThingHandlerFactory {
 
     private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_SAMPLE);
 
@@ -48,7 +50,7 @@ public class Cardio2eHandlerFactory extends BaseThingHandlerFactory {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
         if (THING_TYPE_SAMPLE.equals(thingTypeUID)) {
-            return new Cardio2eHandler(thing);
+            return new cardio2eHandler(thing);
         }
 
         return null;
