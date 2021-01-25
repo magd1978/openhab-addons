@@ -18,7 +18,7 @@ package org.openhab.binding.cardio2e.internal;
  * @author Manuel Alberto Guerrero Díaz - Initial contribution
  * @author Fernando A. P. Gomes - OH2 and OH3 port
  */
-public class cardio2eConfiguration {
+public class Cardio2eConfiguration {
 
     public String serialPort = "/dev/ttyUSB0"; // serial port where the device is connected
     public int programCode = 00000; // Installer code (optional, installer program code for login; by default '00000')

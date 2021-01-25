@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.cardio2e.internal;
 
-import static org.openhab.binding.cardio2e.internal.cardio2eBindingConstants.*;
+import static org.openhab.binding.cardio2e.internal.Cardio2eBindingConstants.*;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -57,7 +57,7 @@ import org.openhab.binding.cardio2e.internal.code.Cardio2eZonesTransaction;
  * @author Fernando A. P. Gomes - OH2 and OH3 port
  */
 @NonNullByDefault
-public class cardio2eHandler extends BaseThingHandler {
+public class Cardio2eHandler extends BaseThingHandler {
 
     private final Logger logger = LoggerFactory.getLogger(cardio2eHandler.class);
 

@@ -23,7 +23,7 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
  * @author Fernando A. P. Gomes - OH3 port
  */
 @NonNullByDefault
-public class cardio2eBindingConstants {
+public class Cardio2eBindingConstants {
 
     private static final String BINDING_ID = "cardio2e";
 

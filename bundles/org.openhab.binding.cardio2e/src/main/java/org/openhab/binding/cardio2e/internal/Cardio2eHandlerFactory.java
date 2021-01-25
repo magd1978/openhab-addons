@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.cardio2e.internal;
 
-import static org.openhab.binding.cardio2e.internal.cardio2eBindingConstants.*;
+import static org.openhab.binding.cardio2e.internal.Cardio2eBindingConstants.*;
 
 import java.util.Collections;
 import java.util.Set;
@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Component;
  */
 @NonNullByDefault
 @Component(configurationPid = "binding.cardio2e", service = ThingHandlerFactory.class)
-public class cardio2eHandlerFactory extends BaseThingHandlerFactory {
+public class Cardio2eHandlerFactory extends BaseThingHandlerFactory {
 
     private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_SAMPLE);
 
