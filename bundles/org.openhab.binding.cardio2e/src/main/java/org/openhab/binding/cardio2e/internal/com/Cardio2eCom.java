@@ -33,15 +33,22 @@ import org.openhab.binding.cardio2e.internal.code.Cardio2eTransactionTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.TooManyListenersException;
+import org.eclipse.smarthome.io.transport.serial.PortInUseException;
+import org.eclipse.smarthome.io.transport.serial.SerialPort;
+import org.eclipse.smarthome.io.transport.serial.SerialPortEvent;
+import org.eclipse.smarthome.io.transport.serial.SerialPortEventListener;
+import org.eclipse.smarthome.io.transport.serial.SerialPortIdentifier;
+import org.eclipse.smarthome.io.transport.serial.SerialPortManager;
+import org.eclipse.smarthome.io.transport.serial.UnsupportedCommOperationException;
 
 /**
  * Cardio2e COM RS-232 handling class.
  * 
  * @author Manuel Alberto Guerrero Díaz
+ * @author Fernando A. P. Gomes
  * @Since 1.11.0
  */
 
@@ -64,23 +71,26 @@ public class Cardio2eCom {
 	private static final int MAX_SENDING_TRIES = 3; // Maximum tries for
 													// transaction sending until
 													// ACK/NACK is received
-	private int minDelayBetweenReceivingAndSending = 200; // Minimum delay in
-															// milliseconds that
-															// we must wait
-															// before send when
-															// any data is
-															// received.
-	private int minDelayBetweenSendings = 300; // Minimum delay in milliseconds
-												// between send actions.
 	private int sendingTimerCyclePeriod; // Calculated sending timer cycle
 											// period in milliseconds (must be
 											// G.C.D. of
 											// minDelayBetweenReceivingAndSending
 											// and minDelayBetweenSendings)
+	private int minDelayBetweenReceivingAndSending = 200; // Minimum delay in
+											// milliseconds that
+											// we must wait
+											// before send when
+											// any data is
+											// received.
+	private int minDelayBetweenSendings = 300; // Minimum delay in milliseconds
+					// between send actions.
+
 	public boolean testMode = false;
 	public Cardio2eDecoder decoder = null;
 	private DecodedTransactionListener decodedTransactionListener = null;
-	private SerialPort serialPort = null;
+	private String serialPortName = "";
+	SerialPort serialPort = null;
+	private SerialPortManager serialPortManager;
 	private transient Vector<Cardio2eComEventListener> comEventListeners;
 	private volatile Timer timer = null;
 	private volatile TimerTask cyclicSend = null;
@@ -173,21 +183,32 @@ public class Cardio2eCom {
 	}
 
 	public synchronized void connect() {
+		logger.debug("open(): Opening Serial Connection");
 		try {
-			serialPort.openPort();
-			if (serialPort.isOpened()) {
-				serialPort.setParams(SerialPort.BAUDRATE_9600,
+			SerialPortIdentifier portIdentifier = serialPortManager.getIdentifier(serialPortName);
+			if (portIdentifier != null) {
+				SerialPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
+				serialPort = commPort;
+
+				serialPort.setSerialPortParams(9600,
 						SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
 						SerialPort.PARITY_NONE);
 				serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
 				timer = new Timer();
-				serialPort.addEventListener(new PortReader(),
-						SerialPort.MASK_RXCHAR);
+				
+                try {
+                    serialPort.addEventListener(new PortReader());
+                    serialPort.notifyOnDataAvailable(true);
+                } catch (TooManyListenersException e) {
+                    logger.debug("Too Many Listeners Exception: {}", e.getMessage(), e);
+                }
 			}
-		} catch (SerialPortException ex) {
-			logger.warn("Cannot open port: '{}'", ex.toString());
-		} catch (Exception ex) {
-			logger.warn("Unknown error in opening port: '{}'", ex.toString());
+		} catch (PortInUseException e) {
+            logger.debug("open(): Port in Use Exception: {}", e.getMessage(), e);
+            signalIsConnected(false);
+        } catch (UnsupportedCommOperationException e) {
+            logger.debug("open(): Unsupported Comm Operation Exception: {}", e.getMessage(), e);
+            signalIsConnected(false);
 		} finally {
 			signalIsConnected(isConnected());
 		}
@@ -309,8 +330,9 @@ public class Cardio2eCom {
 				clearBuffer();
 				tryLogout();
 				Thread.sleep(minDelayBetweenSendings * MAX_SENDING_TRIES * 2);
-				serialPort.closePort();
+				serialPort.close();
 				signalIsConnected(isConnected());
+				logger.debug("close(): Serial Connection closed");
 			} catch (SerialPortException ex) {
 				logger.warn("Cannot close port: '{}'", ex.toString());
 			} catch (Exception ex) {
@@ -326,7 +348,7 @@ public class Cardio2eCom {
 
 	public boolean isConnected() {
 		if (serialPort != null) {
-			return serialPort.isOpened();
+			return true;
 		} else {
 			return false;
 		}
@@ -474,10 +496,6 @@ public class Cardio2eCom {
 															// transaction
 															// char
 				logger.debug("Sent '{}' to Cardio 2é", stringTransaction);
-			} catch (SerialPortException ex) {
-				logger.warn(
-						"There was an error on writing string to port: '{}'",
-						ex.toString());
 			} catch (Exception ex) {
 				logger.warn("Unexpected error in sending data: '{}'",
 						ex.toString());
@@ -522,7 +540,7 @@ public class Cardio2eCom {
 	private class PortReader implements SerialPortEventListener {
 		@Override
 		public void serialEvent(SerialPortEvent event) {
-			if (event.isRXCHAR() && event.getEventValue() > 0) {
+			if (event.getEventType() > 0) {
 				try {
 					lastReceivedTimeStamp = System.currentTimeMillis(); // Stores
 																		// time
@@ -530,7 +548,7 @@ public class Cardio2eCom {
 																		// for
 																		// timing
 																		// control
-					String data = serialPort.readString(event.getEventValue());
+					String data = serialPort.readString(event.getEventType());
 					if (testMode) { // Adapts END transaction
 									// character to test console
 									// when test mode is enabled

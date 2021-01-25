@@ -121,24 +121,24 @@ public class Cardio2eHandler extends BaseThingHandler {
         decodedTransactionListener = new DecodedTransactionListener();
         com.addReceivedDataListener(receivedDataListener);
         decoder.addDecodedTransactionListener(decodedTransactionListener);
-        decoder.decodeZonesStateTransaction = zoneStateDetection;
-        com.setSerialPort(port);
-        if (minDelayBetweenReceivingAndSending > 0)
-            com.setMinDelayBetweenReceivingAndSending(minDelayBetweenReceivingAndSending);
-        if (minDelayBetweenSendings > 0)
-            com.setMinDelayBetweenSendings(minDelayBetweenSendings);
+        decoder.decodeZonesStateTransaction = config.zones;
+        com.setSerialPort(config.serialPort);
+        if (config.minDelayBetweenReceivingAndSending > 0)
+            com.setMinDelayBetweenReceivingAndSending(config.minDelayBetweenReceivingAndSending);
+        if (config.minDelayBetweenSendings > 0)
+            com.setMinDelayBetweenSendings(config.minDelayBetweenSendings);
   
         try {
-            com.sendTransaction(new Cardio2eLoginTransaction(programCode)); // Login
+            com.sendTransaction(new Cardio2eLoginTransaction(config.programCode)); // Login
                                                                             // request
         } catch (Exception ex) {
             logger.warn("Failed to send login request: '{}'", ex.toString());
         }
   
-        if (testMode)
-            loggedIn = true;
+        //if (testMode)
+        //    loggedIn = true;
   
-        setProperlyConfigured(true);
+        //setProperlyConfigured(true);
   
         logger.debug("Cardio2e binding activated");
         

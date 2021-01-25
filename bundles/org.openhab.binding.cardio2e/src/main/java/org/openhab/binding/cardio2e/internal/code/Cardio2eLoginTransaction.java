@@ -54,7 +54,7 @@ public class Cardio2eLoginTransaction extends Cardio2eTransaction {
 		}
 	}
 
-	public Cardio2eLoginTransaction(String programCode) { // Simple set login
+	public Cardio2eLoginTransaction(Integer programCode) { // Simple set login
 															// constructor.
 		setTransactionType(Cardio2eTransactionTypes.SET);
 		super.setObjectType(Cardio2eObjectTypes.LOGIN);
