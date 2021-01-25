@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 
 /**
- * The {@link cardio2eBindingConstants} class defines common constants, which are
+ * The {@link Cardio2eBindingConstants} class defines common constants, which are
  * used across the whole binding.
  *
  * @author Manuel Alberto Guerrero Díaz - Initial contribution

@@ -27,7 +27,7 @@ import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The {@link cardio2eHandlerFactory} is responsible for creating things and thing
+ * The {@link Cardio2eHandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author Manuel Alberto Guerrero Díaz - Initial contribution
@@ -50,7 +50,7 @@ public class Cardio2eHandlerFactory extends BaseThingHandlerFactory {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
         if (THING_TYPE_SAMPLE.equals(thingTypeUID)) {
-            return new cardio2eHandler(thing);
+            return new Cardio2eHandler(thing);
         }
 
         return null;

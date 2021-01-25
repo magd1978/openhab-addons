@@ -59,15 +59,15 @@ import org.openhab.binding.cardio2e.internal.code.Cardio2eZonesTransaction;
 @NonNullByDefault
 public class Cardio2eHandler extends BaseThingHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(cardio2eHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(Cardio2eHandler.class);
 
-    private @Nullable cardio2eConfiguration config;
+    private @Nullable Cardio2eConfiguration config;
     private @Nullable Cardio2eCom com;
     private @Nullable Cardio2eDecoder decoder;
     private @Nullable ReceivedDataListener receivedDataListener;
     private @Nullable DecodedTransactionListener decodedTransactionListener;
 
-    public cardio2eHandler(Thing thing) {
+    public Cardio2eHandler(Thing thing) {
         super(thing);
     }
 
@@ -111,7 +111,7 @@ public class Cardio2eHandler extends BaseThingHandler {
     @Override
     public void initialize() {
         logger.debug("Start initializing!");
-        config = getConfigAs(cardio2eConfiguration.class);
+        config = getConfigAs(Cardio2eConfiguration.class);
 
         updateStatus(ThingStatus.UNKNOWN);
 
