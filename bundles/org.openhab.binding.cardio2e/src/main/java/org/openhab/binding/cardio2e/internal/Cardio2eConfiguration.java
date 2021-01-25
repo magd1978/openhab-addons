@@ -21,7 +21,8 @@ package org.openhab.binding.cardio2e.internal;
 public class Cardio2eConfiguration {
 
     public String serialPort = "/dev/ttyUSB0"; // serial port where the device is connected
-    public int programCode = 00000; // Installer code (optional, installer program code for login; by default '00000')
+    // maybe modify to string?!?
+    public String programCode = "00000"; // Installer code (optional, installer program code for login; by default '00000')
     public int minDelayBetweenReceivingAndSending = 200; // Minimum delay between receiving and sending (optional, for expert tunning only; by default '200' milliseconds tested safe value)
     public int minDelayBetweenSendings = 300; // Minimum delay between sendings (optional, for expert tunning only; by default '300' milliseconds tested safe value)
     public boolean filterUnnecessaryCommand = false; // Filter unnecessary command (optional; by default 'false')
