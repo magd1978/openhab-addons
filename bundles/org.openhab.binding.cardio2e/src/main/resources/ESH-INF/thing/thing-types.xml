@@ -6,7 +6,7 @@
 
 	<!-- Sample Thing Type -->
 	<thing-type id="sample">
-		<label>cardio2e Binding Thing</label>
+		<label>Cardio2e Binding Thing</label>
 		<description>Sample thing for cardio2e Binding</description>
 
 		<channels>
