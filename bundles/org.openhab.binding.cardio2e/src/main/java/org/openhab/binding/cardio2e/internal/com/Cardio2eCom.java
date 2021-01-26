@@ -120,8 +120,7 @@ public class Cardio2eCom {
 		comEventListeners.addElement(l);
 	}
 
-	synchronized public void removeReceivedDataListener(
-			Cardio2eComEventListener l) {
+	synchronized public void removeReceivedDataListener(Cardio2eComEventListener l) {
 		if (comEventListeners == null) {
 			comEventListeners = new Vector<Cardio2eComEventListener>();
 		}

@@ -87,30 +87,9 @@ public class Cardio2eHandler extends BaseThingHandler {
         }
     }
 
-    private class ReceivedDataListener implements Cardio2eComEventListener {
-        public ReceivedDataListener() {
-        }
-
-        public void receivedData(Cardio2eReceivedDataEvent e) {
-        }
-
-        public void isConnected(Cardio2eConnectionEvent e) {
-            logger.info("Cardio is {}.", (e.getIsConnected() ? "CONNECTED"
-                    : "DISCONNECTED"));
-        }
-    }
-
-    private class DecodedTransactionListener implements Cardio2eDecodedTransactionListener {
-        public DecodedTransactionListener() {
-        }
-
-        public void decodedTransaction(Cardio2eDecodedTransactionEvent e) {
-        }
-    }
-
     @Override
     public void initialize() {
-        logger.debug("Start initializing!");
+        logger.debug(" Cardio2e Start initializing!");
         config = getConfigAs(Cardio2eConfiguration.class);
 
         updateStatus(ThingStatus.UNKNOWN);
