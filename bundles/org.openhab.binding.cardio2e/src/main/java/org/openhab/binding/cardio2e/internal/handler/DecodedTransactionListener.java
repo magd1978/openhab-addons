@@ -1,4 +1,4 @@
-package org.openhab.binding.cardio2e.internal;
+package org.openhab.binding.cardio2e.internal.handler;
 
 import org.openhab.binding.cardio2e.internal.code.Cardio2eDecodedTransactionEvent;
 import org.openhab.binding.cardio2e.internal.code.Cardio2eDecoder.Cardio2eDecodedTransactionListener;

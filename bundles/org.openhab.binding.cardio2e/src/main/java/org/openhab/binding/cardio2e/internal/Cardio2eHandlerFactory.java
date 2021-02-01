@@ -13,6 +13,7 @@
 package org.openhab.binding.cardio2e.internal;
 
 import static org.openhab.binding.cardio2e.internal.Cardio2eBindingConstants.*;
+import org.openhab.binding.cardio2e.internal.handler.Cardio2eHandler;
 
 import java.util.Collections;
 import java.util.Set;
@@ -27,18 +28,17 @@ import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The {@link Cardio2eHandlerFactory} is responsible for creating things and thing
+ * The {@link cardio2eHandlerFactory} is responsible for creating things and thing
  * handlers.
  *
- * @author Manuel Alberto Guerrero Díaz - Initial contribution
  * @author Fernando A. P. Gomes - OH2 and OH3 port
- * 
+ *
  */
 @NonNullByDefault
 @Component(configurationPid = "binding.cardio2e", service = ThingHandlerFactory.class)
 public class Cardio2eHandlerFactory extends BaseThingHandlerFactory {
 
-    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_SAMPLE);
+    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_CARDIO2E);
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -49,7 +49,7 @@ public class Cardio2eHandlerFactory extends BaseThingHandlerFactory {
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
-        if (THING_TYPE_SAMPLE.equals(thingTypeUID)) {
+        if (THING_TYPE_CARDIO2E.equals(thingTypeUID)) {
             return new Cardio2eHandler(thing);
         }
 

@@ -1,4 +1,4 @@
-# Cardio2e Binding
+# cardio2e Binding
 
 _Give some details about what this binding is meant for - a protocol, system, specific device._
 

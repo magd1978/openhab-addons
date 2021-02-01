@@ -36,4 +36,6 @@ public class Cardio2eConfiguration {
     public int allowedDatetimeUpdateHour = -1; // Allowed date and time update hour (optional, allows date and time updates on specified hour only; valid values are from '0' to '23'; '-1' value disables hour restriction; by default '-1')
     
     public int securityCode = 0; // cardio2e security code for arm / disarm alarm
+
+    public boolean testMode = true; // only for development testing
 }

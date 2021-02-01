@@ -12,17 +12,15 @@
  */
 package org.openhab.binding.cardio2e.internal.handler;
 
-import java.io.IOException;
-
 import static org.openhab.binding.cardio2e.internal.Cardio2eBindingConstants.*;
 
 import org.openhab.binding.cardio2e.internal.Cardio2eConfiguration;
 
 import org.openhab.binding.cardio2e.internal.connector.Cardio2eSerialConnector;
-import org.openhab.binding.cardio2e.internal.connector.Cardio2eConnectionEvent;
 import org.openhab.binding.cardio2e.internal.connector.Cardio2eReceivedDataEvent;
 
 import org.openhab.binding.cardio2e.internal.code.Cardio2eDecoder;
+import org.openhab.binding.cardio2e.internal.code.Cardio2eLoginTransaction;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -53,7 +51,7 @@ public class Cardio2eHandler extends BaseThingHandler {
     private @Nullable Cardio2eDecoder decoder;
     private @Nullable ReceivedDataListener receivedDataListener;
     private @Nullable DecodedTransactionListener decodedTransactionListener;
-
+    private boolean loggedIn = false;
 
     public Cardio2eHandler(Thing thing) {
         super(thing);
