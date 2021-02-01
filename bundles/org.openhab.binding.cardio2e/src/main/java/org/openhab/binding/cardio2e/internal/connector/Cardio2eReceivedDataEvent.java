@@ -10,27 +10,27 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.cardio2e.internal.com;
+package org.openhab.binding.cardio2e.internal.connector;
 
 import java.util.EventObject;
 
 /**
- * Cardio2e Connection Event class.
+ * Cardio2e Received Data Event class.
  * 
  * @author Manuel Alberto Guerrero Díaz
- * @Since 1.11.0
+ * @author Fernando A. P. Gomes - OH2 and OH3 port
  */
 
-public class Cardio2eConnectionEvent extends EventObject {
+public class Cardio2eReceivedDataEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
-	private boolean isConnected;
+	private String receivedData = null;
 
-	public Cardio2eConnectionEvent(Object source, boolean isConnected) {
+	public Cardio2eReceivedDataEvent(Object source, String receivedData) {
 		super(source);
-		this.isConnected = isConnected;
+		this.receivedData = receivedData;
 	}
 
-	public boolean getIsConnected() {
-		return isConnected;
+	public String getReceivedData() {
+		return receivedData;
 	}
 }

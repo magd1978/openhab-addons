@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.cardio2e.internal.com;
+package org.openhab.binding.cardio2e.internal.connector;
 
 import java.util.Deque;
 import java.util.EventListener;
@@ -42,12 +42,13 @@ import jssc.SerialPortException;
  * Cardio2e COM RS-232 handling class.
  * 
  * @author Manuel Alberto Guerrero Díaz
- * @Since 1.11.0
+ * @author Fernando A. P. Gomes - OH2 and OH3 port
+ * 
  */
 
-public class Cardio2eCom {
+public class Cardio2eSerialConnector {
 	private static final Logger logger = LoggerFactory
-			.getLogger(Cardio2eCom.class);
+			.getLogger(Cardio2eSerialConnector.class);
 	private static final char CARDIO2E_END_TRANSACTION_TEST_CHARACTER = '\n'; // for
 																				// testMode
 																				// Cardio2eTransaction.CARDIO2E_END_TRANSACTION_CHARACTER
@@ -81,7 +82,7 @@ public class Cardio2eCom {
 	public Cardio2eDecoder decoder = null;
 	private DecodedTransactionListener decodedTransactionListener = null;
 	private SerialPort serialPort = null;
-	private transient Vector<Cardio2eComEventListener> comEventListeners;
+	private transient Vector<Cardio2eSerialConnectorEventListener> comEventListeners;
 	private volatile Timer timer = null;
 	private volatile TimerTask cyclicSend = null;
 	private volatile boolean cyclicSending = false;
@@ -90,12 +91,12 @@ public class Cardio2eCom {
 	private volatile long lastSendTimeStamp;
 	private volatile Cardio2eTransaction nextSendingTransaction = null;
 
-	public Cardio2eCom() {
+	public Cardio2eSerialConnector() {
 		calculateSendingTimerCyclePeriod();
 		initializeDecodedTransactionListener();
 	}
 
-	public Cardio2eCom(String serialPort) {
+	public Cardio2eSerialConnector(String serialPort) {
 		calculateSendingTimerCyclePeriod();
 		initializeDecodedTransactionListener();
 		this.setSerialPort(serialPort);
@@ -107,22 +108,22 @@ public class Cardio2eCom {
 		decoder.addDecodedTransactionListener(decodedTransactionListener);
 	}
 
-	public interface Cardio2eComEventListener extends EventListener {
+	public interface Cardio2eSerialConnectorEventListener extends EventListener {
 		public void receivedData(Cardio2eReceivedDataEvent e);
 
 		public void isConnected(Cardio2eConnectionEvent e);
 	}
 
-	synchronized public void addReceivedDataListener(Cardio2eComEventListener l) {
+	synchronized public void addReceivedDataListener(Cardio2eSerialConnectorEventListener l) {
 		if (comEventListeners == null) {
-			comEventListeners = new Vector<Cardio2eComEventListener>();
+			comEventListeners = new Vector<Cardio2eSerialConnectorEventListener>();
 		}
 		comEventListeners.addElement(l);
 	}
 
-	synchronized public void removeReceivedDataListener(Cardio2eComEventListener l) {
+	synchronized public void removeReceivedDataListener(Cardio2eSerialConnectorEventListener l) {
 		if (comEventListeners == null) {
-			comEventListeners = new Vector<Cardio2eComEventListener>();
+			comEventListeners = new Vector<Cardio2eSerialConnectorEventListener>();
 		}
 		comEventListeners.removeElement(l);
 	}
@@ -132,17 +133,17 @@ public class Cardio2eCom {
 		if (comEventListeners != null && !comEventListeners.isEmpty()) {
 			Cardio2eReceivedDataEvent event = new Cardio2eReceivedDataEvent(
 					this, data);
-			Vector<Cardio2eComEventListener> targets; // make a copy of the
+			Vector<Cardio2eSerialConnectorEventListener> targets; // make a copy of the
 														// listener list in case
 														// anyone adds/removes
 														// listeners
 			synchronized (this) {
-				targets = (Vector<Cardio2eComEventListener>) comEventListeners
+				targets = (Vector<Cardio2eSerialConnectorEventListener>) comEventListeners
 						.clone();
 			}
-			Enumeration<Cardio2eComEventListener> e = targets.elements();
+			Enumeration<Cardio2eSerialConnectorEventListener> e = targets.elements();
 			while (e.hasMoreElements()) {
-				Cardio2eComEventListener l = (Cardio2eComEventListener) e
+				Cardio2eSerialConnectorEventListener l = (Cardio2eSerialConnectorEventListener) e
 						.nextElement();
 				l.receivedData(event);
 			}
@@ -154,17 +155,17 @@ public class Cardio2eCom {
 		if (comEventListeners != null && !comEventListeners.isEmpty()) {
 			Cardio2eConnectionEvent event = new Cardio2eConnectionEvent(this,
 					isConnected);
-			Vector<Cardio2eComEventListener> targets; // make a copy of the
+			Vector<Cardio2eSerialConnectorEventListener> targets; // make a copy of the
 														// listener list in case
 														// anyone adds/removes
 														// listeners
 			synchronized (this) {
-				targets = (Vector<Cardio2eComEventListener>) comEventListeners
+				targets = (Vector<Cardio2eSerialConnectorEventListener>) comEventListeners
 						.clone();
 			}
-			Enumeration<Cardio2eComEventListener> e = targets.elements();
+			Enumeration<Cardio2eSerialConnectorEventListener> e = targets.elements();
 			while (e.hasMoreElements()) {
-				Cardio2eComEventListener l = (Cardio2eComEventListener) e
+				Cardio2eSerialConnectorEventListener l = (Cardio2eSerialConnectorEventListener) e
 						.nextElement();
 				l.isConnected(event);
 			}
@@ -464,7 +465,7 @@ public class Cardio2eCom {
 					stringTransaction = stringTransaction
 							.replace(
 									Cardio2eTransaction.CARDIO2E_END_TRANSACTION_CHARACTER,
-									Cardio2eCom.CARDIO2E_END_TRANSACTION_TEST_CHARACTER);
+									Cardio2eSerialConnector.CARDIO2E_END_TRANSACTION_TEST_CHARACTER);
 				}
 				serialPort.writeString(stringTransaction);
 				stringTransaction = stringTransaction.substring(0,
@@ -535,7 +536,7 @@ public class Cardio2eCom {
 									// when test mode is enabled
 						data = data
 								.replace(
-										Cardio2eCom.CARDIO2E_END_TRANSACTION_TEST_CHARACTER,
+										Cardio2eSerialConnector.CARDIO2E_END_TRANSACTION_TEST_CHARACTER,
 										Cardio2eTransaction.CARDIO2E_END_TRANSACTION_CHARACTER);
 					}
 					logger.trace("Received data from Cardio 2é: '{}'", data);
