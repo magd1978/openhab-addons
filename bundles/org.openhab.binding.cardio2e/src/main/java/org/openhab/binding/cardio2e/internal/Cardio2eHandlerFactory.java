@@ -28,7 +28,7 @@ import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The {@link cardio2eHandlerFactory} is responsible for creating things and thing
+ * The {@link Cardio2eHandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author Fernando A. P. Gomes - OH2 and OH3 port
