@@ -37,8 +37,8 @@ import org.slf4j.LoggerFactory;
  * The {@link cardio2eHandler} is responsible for handling commands, which are
  * sent to one of the channels.
  *
- * @author Manuel Alberto Guerrero Díaz - Initial contribution
  * @author Fernando A. P. Gomes - OH2 and OH3 port
+ * @author Manuel Alberto Guerrero Díaz - Initial contribution
  * 
  */
 @NonNullByDefault
